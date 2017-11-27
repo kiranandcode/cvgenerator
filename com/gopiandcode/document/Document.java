@@ -11,6 +11,13 @@ public class Document {
     private ContactDetails details;
     private ArrayList<InformationList> content;
 
+    public Document() {
+        title = "";
+        taster = "";
+        details = new ContactDetails();
+    }
+
+
     public String getTitle() {
         return title;
     }

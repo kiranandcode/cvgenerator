@@ -54,9 +54,13 @@ public class MainFrame extends JFrame{
     }
 
     private void setupComponents() {
-        JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-//        pane.add(new DocumentView(new DocumentModel(new Document())));
-        pane.add(new ContactDetailsView(new ContactDetailsModel(new ContactDetails())));
+        JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        Document document = new Document();
+        JPanel panel = new JPanel(new GridLayout(1,2));
+        panel.add(new DocumentView(new DocumentModel(document)));
+        panel.add(new ContactDetailsView(new ContactDetailsModel(document.getDetails())));
+        pane.add(panel);
+        pane.add(new JPanel());
 
         add(pane, BorderLayout.CENTER);
     }
