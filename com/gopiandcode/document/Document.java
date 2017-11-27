@@ -1,13 +1,9 @@
 package com.gopiandcode.document;
 
-import com.gopiandcode.latex.Latexisable;
 
 import java.util.ArrayList;
 
-/**
- * Created by gopia on 20/11/2017.
- */
-public class Document implements Latexisable {
+public class Document {
 
     private String title;
     private String taster;
@@ -15,9 +11,46 @@ public class Document implements Latexisable {
     private ContactDetails details;
     private ArrayList<InformationList> content;
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTaster() {
+        return taster;
+    }
+
+    public void setTaster(String taster) {
+        this.taster = taster;
+    }
+
+    public ContactDetails getDetails() {
+        return details;
+    }
+
+    public void setDetails(ContactDetails details) {
+        this.details = details;
+    }
+
+    public ArrayList<InformationList> getContent() {
+        return content;
+    }
+
+    public void setContent(ArrayList<InformationList> content) {
+        this.content = content;
+    }
+
+
     @Override
-    public String toLatex() {
-        //TODO(Kiran): Implement TOLATEX for Document
-        return null;
+    public String toString() {
+        return "Document{" +
+                "title='" + title + '\'' +
+                ", taster='" + taster + '\'' +
+                ", details=" + details +
+                ", content=" + content +
+                '}';
     }
 }

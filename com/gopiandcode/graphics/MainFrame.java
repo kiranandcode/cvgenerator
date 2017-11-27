@@ -1,94 +1,65 @@
 package com.gopiandcode.graphics;
 
-import com.gopiandcode.graphics.panels.DocumentPanel;
+import com.gopiandcode.document.ContactDetails;
+import com.gopiandcode.document.Document;
+import com.gopiandcode.graphics.components.AboutAction;
+import com.gopiandcode.graphics.models.ContactDetailsModel;
+import com.gopiandcode.graphics.models.DocumentModel;
+import com.gopiandcode.graphics.views.ContactDetailsView;
+import com.gopiandcode.graphics.views.DocumentView;
 
 import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
-public class MainFrame extends JFrame {
-    private static final int DEFAULT_HEIGHT = 600;
-    private static final int DEFAULT_WIDTH = 800;
-    private DocumentPanel documentPanel;
+public class MainFrame extends JFrame{
 
-    public MainFrame(){
-        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    private AboutAction aboutAction = new AboutAction();
+
+    public MainFrame() {
+
+        setupLayout();
+        setupMenu();
+        setupComponents();
+        setupFrame();
     }
 
-    public MainFrame(int width, int height) {
-        setSize(width, height);
-        setup();
-    }
-
-    private void setup() {
-       setLocationRelativeTo(null);
-
-       setupMenu();
-       setupMainPane();
-       setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    private void setupFrame() {
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(640, 360);
     }
 
 
+    private void setupLayout() {
+    }
     private void setupMenu() {
-        JMenuBar mainMenu = new JMenuBar();
-        setupFileMenu(mainMenu);
-        setupAboutOption(mainMenu);
-
-        setJMenuBar(mainMenu);
-    }
-
-    private void setupAboutOption(JMenuBar mainMenu) {
-        JMenu aboutMenu = new JMenu("About");
-        JMenuItem aboutItem = new JMenuItem("About CV Generator");
-        aboutItem.addActionListener(e -> JOptionPane.showMessageDialog(MainFrame.this,
-               "Simple CV Generator made by Gopiandcode. Use latex to compile resulting file into a nice CV." ,
-               "About - CV Generator",
-               JOptionPane.INFORMATION_MESSAGE));
-
-        aboutMenu.add(aboutItem);
-        mainMenu.add(aboutMenu);
-    }
-
-    private void setupFileMenu(JMenuBar mainMenu) {
+        JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
-        JMenuItem new_cv = new JMenuItem("New Project", 'n');
-        JMenuItem open_cv = new JMenuItem("Open Project", 'o');
-        JMenuItem save_cv = new JMenuItem("Save Project", 's');
-        JMenuItem export_cv = new JMenuItem("Export CV", 'e');
-        JMenuItem exit = new JMenuItem("Exit", 'x');
+        JMenuItem newProject = new JMenuItem("New Project");
+        JMenuItem saveProject = new JMenuItem("Save Project");
+        JMenuItem exportProject = new JMenuItem("Export Project");
 
-        open_cv.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        fileMenu.add(newProject);
+        fileMenu.add(saveProject);
+        fileMenu.add(exportProject);
+        menuBar.add(fileMenu);
 
-            }
-        });
+        JMenu aboutMenu = new JMenu("About");
+        JMenuItem about = new JMenuItem(aboutAction);
 
-        fileMenu.add(new_cv);
-        fileMenu.add(open_cv);
-        fileMenu.add(save_cv);
-        fileMenu.add(export_cv);
-        fileMenu.add(exit);
-        mainMenu.add(fileMenu);
+        aboutMenu.add(about);
+        menuBar.add(aboutMenu);
+
+
+        setJMenuBar(menuBar);
     }
 
-    private void setupMainPane() {
-        JTabbedPane tabbedPane = new JTabbedPane();
+    private void setupComponents() {
+        JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+//        pane.add(new DocumentView(new DocumentModel(new Document())));
+        pane.add(new ContactDetailsView(new ContactDetailsModel(new ContactDetails())));
 
-        documentPanel = new DocumentPanel();
-
-        tabbedPane.addTab("Document", null, documentPanel, "Modify Document Properties (d)");
-        tabbedPane.setMnemonicAt(0, KeyEvent.VK_D);
-
-        setLayout(new GridLayout(1,1));
-        add(tabbedPane);
-        pack();
+        add(pane, BorderLayout.CENTER);
     }
-
 
 
 }
