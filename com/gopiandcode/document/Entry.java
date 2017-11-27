@@ -3,7 +3,7 @@ package com.gopiandcode.document;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Entry {
+public class Entry implements Comparable<Entry> {
     private String date;
     private String location;
     private String title;
@@ -60,6 +60,14 @@ public class Entry {
                 ", title='" + title + '\'' +
                 ", details=" + details +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Entry other) {
+        if(other.toString().equals(this.toString())) {
+            return 0;
+        }
+        return -1;
     }
 }
 

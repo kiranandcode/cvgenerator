@@ -3,13 +3,16 @@ package com.gopiandcode.graphics;
 import com.gopiandcode.document.ContactDetails;
 import com.gopiandcode.document.Document;
 import com.gopiandcode.document.Entry;
+import com.gopiandcode.document.Subsection;
 import com.gopiandcode.graphics.components.AboutAction;
 import com.gopiandcode.graphics.models.ContactDetailsModel;
 import com.gopiandcode.graphics.models.DocumentModel;
 import com.gopiandcode.graphics.models.EntryModel;
+import com.gopiandcode.graphics.models.SubsectionModel;
 import com.gopiandcode.graphics.views.ContactDetailsView;
 import com.gopiandcode.graphics.views.DocumentView;
 import com.gopiandcode.graphics.views.EntryView;
+import com.gopiandcode.graphics.views.SubsectionView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +67,8 @@ public class MainFrame extends JFrame{
 //        panel.add(new ContactDetailsView(new ContactDetailsModel(document.getDetails())));
 //        pane.add(panel);
 //        pane.add(new JPanel());
-        pane.add(new EntryView(new EntryModel(new Entry())));
+//        pane.add(new EntryView(new EntryModel(new Entry())));
+        pane.add(new SubsectionView(new SubsectionModel(new Subsection())));
 
         add(pane, BorderLayout.CENTER);
     }
