@@ -9,7 +9,7 @@ public class Document {
     private String taster;
 
     private ContactDetails details;
-    private ArrayList<InformationList> content;
+    private ArrayList<Subsection> content;
 
     public Document() {
         title = "";
@@ -42,11 +42,11 @@ public class Document {
         this.details = details;
     }
 
-    public ArrayList<InformationList> getContent() {
+    public ArrayList<Subsection> getContent() {
         return content;
     }
 
-    public void setContent(ArrayList<InformationList> content) {
+    public void setContent(ArrayList<Subsection> content) {
         this.content = content;
     }
 
