@@ -8,20 +8,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JTabbedPaneList<T extends Comparable<T>> extends JTabbedPane {
+public class JTabbedPaneList<T> extends JTabbedPane {
+    private ArrayList cache = new ArrayList();
     private ListModel<T> model;
-    private JTabbedPaneComponentGenerator<T> generator;
+    private JTabbedPaneComponentGenerator generator;
+    private final PropertyChangeListenerGenerator listenerGenerator;
+    private final TabNameGenerator titleGenerator;
 
-    public JTabbedPaneList(ListModel<T> model, JTabbedPaneComponentGenerator<T> generator){
+    public JTabbedPaneList(ListModel<T> model, JTabbedPaneComponentGenerator<T> generator, PropertyChangeListenerGenerator<T> listenerGenerator, TabNameGenerator<T> titleGenerator) {
         this.model = model;
         this.generator = generator;
+        this.listenerGenerator = listenerGenerator;
+        this.titleGenerator = titleGenerator;
 
         model.addListDataListener(new TabbedPaneListDataListener<>(generator));
     }
 
-    private class TabbedPaneListDataListener<T extends Comparable<T>> implements ListDataListener {
+    private class TabbedPaneListDataListener<T> implements ListDataListener {
         private JTabbedPaneComponentGenerator<T> generator;
-        private java.util.List<Map.Entry<T, Component>> elements = new ArrayList<>();
+        private Map<T, Component> elements = new HashMap<>();
 
         public TabbedPaneListDataListener(JTabbedPaneComponentGenerator<T> generator) {
             this.generator = generator;
@@ -29,36 +34,82 @@ public class JTabbedPaneList<T extends Comparable<T>> extends JTabbedPane {
 
         @Override
         public void intervalAdded(ListDataEvent e) {
-                ListModel list = (ListModel) e.getSource();
+            ListModel<T> list = (ListModel<T>) e.getSource();
 
-                for(int i = e.getIndex1(); i >= e.getIndex1(); i--){
-                    System.out.println("i: "+i);
-                    T item = (T) list.getElementAt(i);
-                    Component component = generator.renderModel(item);
-                    elements.add(i, new HashMap.SimpleEntry<>(item, component));
-                    add(component);
-               }
+            for (int i = e.getIndex1(); i >= e.getIndex1(); i--) {
+                T item = list.getElementAt(i);
+                Component component = generator.renderModel(item);
+                component.addPropertyChangeListener(listenerGenerator.generatePropertyChangeListener(JTabbedPaneList.this.model, i));
+                cache.add(i, item);
+                elements.put(item, component);
+                String title = titleGenerator.generateName(item);
+                if(title.isEmpty()){
+                    title = "[empty entry]";
+                }
+                addTab(title, component);
+            }
         }
 
         @Override
         public void intervalRemoved(ListDataEvent e) {
-            for(int i = e.getIndex1(); i >= e.getIndex0(); i--){
-                remove(i);
-                elements.remove(i);
+            ListModel<T> list = (ListModel<T>) e.getSource();
+            for (int i = e.getIndex1(); i >= e.getIndex0(); i--) {
+                System.out.println("Trying to delete index " + i);
+
+                T elementAt = null;
+                if (i < list.getSize()) {
+                    System.out.println("bingo");
+
+                    elementAt = list.getElementAt(i);
+                } else if (i < cache.size()) {
+                    System.out.println("bingo");
+                    elementAt = (T) cache.get(i);
+                    cache.remove(i);
+                }
+                if (elementAt != null) {
+                    removeModelTab(elementAt);
+                    elements.remove(elementAt);
+                }
+            }
+        }
+
+        private void removeModelTab(T elementAt) {
+            Component c = elements.get(elementAt);
+            for (int j = 0; j < getTabCount(); j++) {
+                Component tabComponentAt = getComponentAt(j);
+                if (tabComponentAt == c) {
+                    removeTabAt(j);
+                }
             }
         }
 
         @Override
         public void contentsChanged(ListDataEvent e) {
-            ListModel list = (ListModel) e.getSource();
-            for(int i = e.getIndex1(); i >= e.getIndex0(); i--){
-                T item = (T) list.getElementAt(i);
-                if(item.compareTo(elements.get(i).getKey()) != 0) {
-                    Component container = generator.renderModel(item);
-                    elements.set(i, new HashMap.SimpleEntry<>(item, container));
-                    remove(i);
-                    add(container,i);
+            ListModel<T> list = (ListModel<T>) e.getSource();
+            for (int i = e.getIndex1(); i >= e.getIndex0(); i--) {
+                // Remove existing tab
+
+                T elementAt = null;
+                if (i < list.getSize()) {
+                    System.out.println("bingo");
+
+                    elementAt = list.getElementAt(i);
+                } else if (i < cache.size()) {
+                    System.out.println("bingo");
+                    elementAt = (T) cache.get(i);
                 }
+                if (elementAt != null) {
+//                    removemodeltab(elementat);
+//                    elements.remove(elementat);
+//
+//                    component container = generator.rendermodel(elementat);
+//                    container.addpropertychangelistener(listenergenerator.generatepropertychangelistener(jtabbedpanelist.this.model, i));
+//                    elements.put(elementat, container);
+//                    addtab(titlegenerator.generatename(elementat), container);
+                    setTitleAt(cache.indexOf(elementAt), titleGenerator.generateName(elementAt));
+                }
+
+
             }
         }
     }

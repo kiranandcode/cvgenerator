@@ -4,13 +4,20 @@ import com.gopiandcode.document.Entry;
 import com.gopiandcode.graphics.components.FunctionalDocumentListener;
 
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.SwingPropertyChangeSupport;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.plaf.basic.BasicListUI;
 import javax.swing.table.TableModel;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class EntryModel {
-
+    private final SwingPropertyChangeSupport support = new SwingPropertyChangeSupport(this,true);
     private final Document titleDocument;
     private final Document dateDocument;
     private final Document locationDocument;
@@ -19,13 +26,35 @@ public class EntryModel {
 
     public EntryModel(Entry entry) {
         this.entry = entry;
+
         this.titleDocument = new PlainDocument();
         this.titleDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> this.entry.setTitle(s)));
+        this.titleDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> {
+            this.support.firePropertyChange(new PropertyChangeEvent(this.titleDocument, "title",
+                    this.entry.getTitle(), s));
+        }));
+
         this.dateDocument = new PlainDocument();
         this.dateDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> this.entry.setDate(s)));
+        this.dateDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> {
+            this.support.firePropertyChange(new PropertyChangeEvent(this.dateDocument, "date",
+                    this.entry.getDate(), s));
+        }));
+
+
+
+
         this.locationDocument = new PlainDocument();
         this.locationDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> this.entry.setLocation(s)));
+        this.locationDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> {
+            this.support.firePropertyChange(new PropertyChangeEvent(this.locationDocument, "location",
+                    this.entry.getLocation(), s));
+        }));
+
         this.detailsTableModel = new DetailsTableModel(this.entry.getDetails());
+        this.detailsTableModel.addTableModelListener(e -> {
+           this.support.firePropertyChange("details", this.entry.getDetails().size(), this.entry.getDetails());
+        });
     }
 
     public Document getDateModel() {
@@ -64,5 +93,11 @@ public class EntryModel {
             }
             detailsTable.updateUI();
         };
+    }
+
+
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
     }
 }

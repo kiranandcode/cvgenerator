@@ -2,6 +2,8 @@ package com.gopiandcode.graphics.views;
 
 import com.gopiandcode.document.Entry;
 import com.gopiandcode.graphics.components.JTabbedPaneList;
+import com.gopiandcode.graphics.components.PropertyChangeListenerGenerator;
+import com.gopiandcode.graphics.models.EntryListModel;
 import com.gopiandcode.graphics.models.SubsectionModel;
 
 import javax.swing.*;
@@ -18,7 +20,10 @@ public class SubsectionView extends JPanel {
         titleField.setDocument(model.getTitleModel());
         titleLabel.setLabelFor(titleField);
 
-        JTabbedPaneList<Entry> entryPane = new JTabbedPaneList<Entry>(model.getEntriesModel(), model.getEntryGenerator());
+
+        JTabbedPaneList<Entry> entryPane =
+                new JTabbedPaneList<Entry>(model.getEntriesModel(), model.getEntryGenerator(), model.getEntryPropertyChangeListenerGenerator(),
+                        Entry::getTitle);
 
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -55,14 +60,15 @@ public class SubsectionView extends JPanel {
             bagConstraints.gridy = 0;
 
             JList<Entry> entryJList = new JList<>(model.getEntriesModel());
+            entryJList.setCellRenderer(model.getListCellRenderer());
             editPanel.add(new JScrollPane(entryJList), bagConstraints);
             JButton addEntryButton = new JButton("Add Entry");
-            addEntryButton.addActionListener(model.getAddEntryActionListener());
+            addEntryButton.addActionListener(model.getAddEntryActionListener(entryJList, entryPane));
             JPanel editButtons = new JPanel();
             editButtons.setLayout(new GridLayout(1, 2));
             editButtons.add(addEntryButton);
             JButton removeEntryButton = new JButton("Remove Entry");
-            removeEntryButton.addActionListener(model.getRemoveEntryActionListener(entryJList));
+            removeEntryButton.addActionListener(model.getRemoveEntryActionListener(entryJList, entryPane));
             editButtons.add(removeEntryButton);
 
             bagConstraints.fill = GridBagConstraints.BOTH;
@@ -98,5 +104,6 @@ public class SubsectionView extends JPanel {
 
 
     }
+
 
 }

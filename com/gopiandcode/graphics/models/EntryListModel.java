@@ -31,6 +31,11 @@ public class EntryListModel extends AbstractListModel<Entry> implements ListMode
 
     public void removeElementAt(int selectedIndex) {
         this.entries.remove(selectedIndex);
-        fireIntervalRemoved(this, 0, this.entries.size()-1);
+        fireIntervalRemoved(this,  selectedIndex, selectedIndex);
     }
+
+    public void notifyEntryChanged(int index) {
+        fireContentsChanged(this, index, index);
+    }
+
 }

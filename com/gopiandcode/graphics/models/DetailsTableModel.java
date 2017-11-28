@@ -50,7 +50,7 @@ public class DetailsTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if(columnIndex == 1) {
+        if(columnIndex == 0) {
             detailsList.remove(rowIndex);
             detailsList.add(rowIndex, (String) aValue);
         } else {

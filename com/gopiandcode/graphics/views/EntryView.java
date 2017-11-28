@@ -4,7 +4,12 @@ import com.gopiandcode.graphics.components.DisplayTextAction;
 import com.gopiandcode.graphics.models.EntryModel;
 
 import javax.swing.*;
+import javax.swing.event.SwingPropertyChangeSupport;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class EntryView extends JPanel {
 
@@ -16,9 +21,17 @@ public class EntryView extends JPanel {
     private final JTextField titleField;
     private final JTable detailsTable;
     private EntryModel model;
+    private SwingPropertyChangeSupport support = new SwingPropertyChangeSupport(this, false);
 
     public EntryView(EntryModel model) {
         this.model = model;
+
+        // TODO: Refactor this?
+        // Necessary Evil as Component doesn't implement getModel() so
+        // I have to propagate changes to the model via the view.
+        this.model.addPropertyChangeListener(evt -> {
+            support.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+        });
 
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -32,6 +45,7 @@ public class EntryView extends JPanel {
         locationField = new JTextField();
         locationLabel.setLabelFor(locationField);
         locationField.setDocument(model.getLocationModel());
+
 
         titleLabel = new JLabel("Title:");
         titleField = new JTextField();
@@ -108,15 +122,6 @@ public class EntryView extends JPanel {
         constraints.gridx = 0;
         constraints.gridy = 3;
         JScrollPane detailsListField = new JScrollPane(detailsTable);
-//        add(detailsListField, constraints);
-//
-//        constraints.fill = GridBagConstraints.BOTH;
-//        constraints.weightx = 0.8;
-//        constraints.weighty = 0.05;
-//        constraints.gridwidth = 5;
-//        constraints.gridheight = 2;
-//        constraints.gridx = 0;
-//        constraints.gridy = 8;
 
         JTextArea addTextArea = new JTextArea();
         JScrollPane addDetailField = new JScrollPane(addTextArea);
@@ -163,5 +168,10 @@ public class EntryView extends JPanel {
         add(generatedEntry, constraints);
 
 
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+       support.addPropertyChangeListener(listener);
     }
 }
