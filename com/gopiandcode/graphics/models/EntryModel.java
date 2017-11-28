@@ -10,6 +10,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.plaf.basic.BasicListUI;
 import javax.swing.table.TableModel;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 import java.awt.event.ActionListener;
@@ -28,6 +29,14 @@ public class EntryModel {
         this.entry = entry;
 
         this.titleDocument = new PlainDocument();
+
+         try {
+            this.titleDocument.insertString(0,this.entry.getTitle(), null );
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
+
         this.titleDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> this.entry.setTitle(s)));
         this.titleDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> {
             this.support.firePropertyChange(new PropertyChangeEvent(this.titleDocument, "title",
@@ -35,6 +44,14 @@ public class EntryModel {
         }));
 
         this.dateDocument = new PlainDocument();
+
+        try {
+            this.dateDocument.insertString(0,this.entry.getDate(), null );
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
+
         this.dateDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> this.entry.setDate(s)));
         this.dateDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> {
             this.support.firePropertyChange(new PropertyChangeEvent(this.dateDocument, "date",
@@ -45,6 +62,14 @@ public class EntryModel {
 
 
         this.locationDocument = new PlainDocument();
+
+        try {
+            this.locationDocument.insertString(0,this.entry.getLocation(), null );
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
+
         this.locationDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> this.entry.setLocation(s)));
         this.locationDocument.addDocumentListener(new FunctionalDocumentListener((String s) -> {
             this.support.firePropertyChange(new PropertyChangeEvent(this.locationDocument, "location",

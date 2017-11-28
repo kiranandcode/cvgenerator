@@ -4,6 +4,7 @@ import com.gopiandcode.document.Document;
 import com.gopiandcode.graphics.controllers.TasterDocumentListener;
 import com.gopiandcode.graphics.controllers.TitleDocumentListener;
 
+import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 public class DocumentModel {
@@ -14,9 +15,20 @@ public class DocumentModel {
     public DocumentModel(Document document) {
         this.document = document;
         this.titleDocument = new PlainDocument();
+        try {
+            this.titleDocument.insertString(0, document.getTitle(), null);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
         this.titleDocument.addDocumentListener(new TitleDocumentListener(this.document));
 
         this.tasterDocument = new PlainDocument();
+         try {
+            this.tasterDocument.insertString(0, document.getTaster(), null);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
         this.tasterDocument.addDocumentListener(new TasterDocumentListener(this.document));
     }
 

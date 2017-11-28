@@ -1,9 +1,11 @@
 package com.gopiandcode.document;
 
 
+import com.gopiandcode.latex.Latexizable;
+
 import java.util.ArrayList;
 
-public class Document {
+public class Document implements Latexizable {
 
     private String title;
     private String taster;
@@ -60,5 +62,10 @@ public class Document {
                 ", details=" + details +
                 ", content=" + content +
                 '}';
+    }
+
+    @Override
+    public String toLatex() {
+        return null;
     }
 }

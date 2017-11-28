@@ -1,5 +1,6 @@
 package com.gopiandcode;
 
+import com.gopiandcode.document.Document;
 import com.gopiandcode.graphics.MainFrame;
 
 import javax.swing.*;
@@ -36,7 +37,7 @@ public class Main {
         // write your code here
             configureStyle();
             EventQueue.invokeLater(() -> {
-                MainFrame frame = new MainFrame();
+                MainFrame frame = new MainFrame(new Document());
                 frame.setVisible(true);
             });
     }
