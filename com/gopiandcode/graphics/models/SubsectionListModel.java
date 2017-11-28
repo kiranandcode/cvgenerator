@@ -9,6 +9,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.SwingPropertyChangeSupport;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
@@ -46,7 +48,7 @@ public class SubsectionListModel extends AbstractListModel<Subsection> implement
 
     @Override
     public Object getSelectedItem() {
-        if(selectedItem.isPresent()) {
+        if(selectedItem.isPresent() && selectedItem.get() < entries.size()) {
             return entries.get(selectedItem.get());
         } else {
             return null;
@@ -149,6 +151,22 @@ public class SubsectionListModel extends AbstractListModel<Subsection> implement
     }
 
 
+    public ActionListener getRemoveSubsectionListener(JList<Subsection> subsectionList) {
+        return e -> {
+            int selectedIndex = subsectionList.getSelectedIndex();
+            if(selectedIndex != -1 && selectedIndex < entries.size()) {
+                removeElementAt(selectedIndex);
+                this.fireIntervalRemoved(this, selectedIndex, selectedIndex);
+            }
+        };
+    }
+
+    public ActionListener getAddSubsectionListener(JList<Subsection> subsectionList) {
+        return e -> {
+            addElement(new Subsection());
+            this.fireIntervalAdded(this, this.getSize()-1, this.getSize()-1);
+        };
+    }
 }
 
 

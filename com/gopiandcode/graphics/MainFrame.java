@@ -57,18 +57,18 @@ public class MainFrame extends JFrame {
 
     private void setupComponents() {
         JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-//        Document document = new Document();
+        Document document = new Document();
         JPanel panel = new JPanel(new GridLayout(1, 2));
-//        panel.add(new DocumentView(new DocumentModel(document)));
-//        panel.add(new ContactDetailsView(new ContactDetailsModel(document.getDetails())));
-//        pane.add(panel);
-//        pane.add(new JPanel());
-//        pane.add(new EntryView(new EntryModel(new Entry())));
-//        pane.add(new SubsectionView(new SubsectionModel(new Subsection())));
-        ArrayList entries = new ArrayList();
-        entries.add(new Subsection("Kiran is a G", new ArrayList<>()));
-        entries.add(new Subsection("KDawg!", new ArrayList<>()));
-        pane.add(new ModifySubsectionListView(new SubsectionListModel(entries)));
+        panel.add(new DocumentView(new DocumentModel(document)));
+        panel.add(new ContactDetailsView(new ContactDetailsModel(document.getDetails())));
+
+        pane.add(panel);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        SubsectionListModel model = new SubsectionListModel(document.getContent());
+        tabbedPane.add("Edit Subsection",new ModifySubsectionListView(model));
+        tabbedPane.add("All Subsections", pane.add(new SubsectionListView(model)));
+        pane.add(tabbedPane);
 
         add(pane, BorderLayout.CENTER);
     }

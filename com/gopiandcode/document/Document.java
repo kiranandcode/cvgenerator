@@ -15,6 +15,7 @@ public class Document {
         title = "";
         taster = "";
         details = new ContactDetails();
+        content = new ArrayList<>();
     }
 
 
