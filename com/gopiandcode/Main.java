@@ -29,12 +29,11 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-        }
+      }
     }
 
     public static void main(String[] args) {
         // write your code here
-
             configureStyle();
             EventQueue.invokeLater(() -> {
                 MainFrame frame = new MainFrame();

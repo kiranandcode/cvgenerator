@@ -3,6 +3,6 @@ package com.gopiandcode.graphics.components;
 
 import java.awt.*;
 
-public interface JTabbedPaneComponentGenerator<T> {
+public interface ComponentGenerator<T> {
    Component renderModel(T model);
 }

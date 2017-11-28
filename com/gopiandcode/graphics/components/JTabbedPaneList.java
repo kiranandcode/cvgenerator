@@ -11,11 +11,11 @@ import java.util.Map;
 public class JTabbedPaneList<T> extends JTabbedPane {
     private ArrayList cache = new ArrayList();
     private ListModel<T> model;
-    private JTabbedPaneComponentGenerator generator;
+    private ComponentGenerator generator;
     private final PropertyChangeListenerGenerator listenerGenerator;
     private final TabNameGenerator titleGenerator;
 
-    public JTabbedPaneList(ListModel<T> model, JTabbedPaneComponentGenerator<T> generator, PropertyChangeListenerGenerator<T> listenerGenerator, TabNameGenerator<T> titleGenerator) {
+    public JTabbedPaneList(ListModel<T> model, ComponentGenerator<T> generator, PropertyChangeListenerGenerator<T> listenerGenerator, TabNameGenerator<T> titleGenerator) {
         this.model = model;
         this.generator = generator;
         this.listenerGenerator = listenerGenerator;
@@ -25,10 +25,10 @@ public class JTabbedPaneList<T> extends JTabbedPane {
     }
 
     private class TabbedPaneListDataListener<T> implements ListDataListener {
-        private JTabbedPaneComponentGenerator<T> generator;
+        private ComponentGenerator<T> generator;
         private Map<T, Component> elements = new HashMap<>();
 
-        public TabbedPaneListDataListener(JTabbedPaneComponentGenerator<T> generator) {
+        public TabbedPaneListDataListener(ComponentGenerator<T> generator) {
             this.generator = generator;
         }
 

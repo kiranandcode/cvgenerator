@@ -5,19 +5,14 @@ import com.gopiandcode.document.Document;
 import com.gopiandcode.document.Entry;
 import com.gopiandcode.document.Subsection;
 import com.gopiandcode.graphics.components.AboutAction;
-import com.gopiandcode.graphics.models.ContactDetailsModel;
-import com.gopiandcode.graphics.models.DocumentModel;
-import com.gopiandcode.graphics.models.EntryModel;
-import com.gopiandcode.graphics.models.SubsectionModel;
-import com.gopiandcode.graphics.views.ContactDetailsView;
-import com.gopiandcode.graphics.views.DocumentView;
-import com.gopiandcode.graphics.views.EntryView;
-import com.gopiandcode.graphics.views.SubsectionView;
+import com.gopiandcode.graphics.models.*;
+import com.gopiandcode.graphics.views.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame {
 
     private AboutAction aboutAction = new AboutAction();
 
@@ -37,6 +32,7 @@ public class MainFrame extends JFrame{
 
     private void setupLayout() {
     }
+
     private void setupMenu() {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -62,13 +58,17 @@ public class MainFrame extends JFrame{
     private void setupComponents() {
         JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 //        Document document = new Document();
-        JPanel panel = new JPanel(new GridLayout(1,2));
+        JPanel panel = new JPanel(new GridLayout(1, 2));
 //        panel.add(new DocumentView(new DocumentModel(document)));
 //        panel.add(new ContactDetailsView(new ContactDetailsModel(document.getDetails())));
 //        pane.add(panel);
 //        pane.add(new JPanel());
 //        pane.add(new EntryView(new EntryModel(new Entry())));
-        pane.add(new SubsectionView(new SubsectionModel(new Subsection())));
+//        pane.add(new SubsectionView(new SubsectionModel(new Subsection())));
+        ArrayList entries = new ArrayList();
+        entries.add(new Subsection("Kiran is a G", new ArrayList<>()));
+        entries.add(new Subsection("KDawg!", new ArrayList<>()));
+        pane.add(new ModifySubsectionListView(new SubsectionListModel(entries)));
 
         add(pane, BorderLayout.CENTER);
     }
