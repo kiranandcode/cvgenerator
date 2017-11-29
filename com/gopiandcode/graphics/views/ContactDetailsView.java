@@ -107,7 +107,7 @@ public class ContactDetailsView extends JPanel {
         bagConstraints.gridheight = 1;
         bagConstraints.gridx = 0;
         bagConstraints.gridy = 9;
-        add(displayButton, bagConstraints);
+//        add(displayButton, bagConstraints);
 
 
 

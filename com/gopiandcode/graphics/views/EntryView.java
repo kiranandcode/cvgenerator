@@ -165,7 +165,7 @@ public class EntryView extends JPanel {
         constraints.gridx = 0;
         constraints.gridy = 12;
         JButton generatedEntry = new JButton(new DisplayTextAction("Generated Entry", () -> this.model.getEntry().toString()));
-        add(generatedEntry, constraints);
+//        add(generatedEntry, constraints);
 
 
     }

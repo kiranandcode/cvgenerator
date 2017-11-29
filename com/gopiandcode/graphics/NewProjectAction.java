@@ -20,6 +20,7 @@ public class NewProjectAction extends AbstractAction implements Action {
         int i = JOptionPane.showConfirmDialog(mainFrame, "Are you sure you want to create a new project?", "Confirm new project", JOptionPane.YES_NO_OPTION);
         if(i == JOptionPane.YES_OPTION) {
             mainFrame.reset(new Document());
+            mainFrame.setTitle("CV Generator - New Project");
         }
     }
 }

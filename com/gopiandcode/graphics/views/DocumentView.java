@@ -87,7 +87,7 @@ public class DocumentView extends JPanel {
         bagConstraints.ipady = 1;
 
         JButton button = new JButton(new DisplayTextAction("Generated Document", () -> model.getDocument().toString() ));
-       add(button, bagConstraints);
+//       add(button, bagConstraints);
 
 
     }

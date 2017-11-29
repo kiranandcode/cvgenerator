@@ -10,41 +10,39 @@ import java.util.Map;
 
 public class ContactDetails implements Latexizable {
 
-    private ArrayList<Map.Entry<String, String>> contact_details;
+    private ArrayList<Tuple> contact_details;
 
     public ContactDetails() {
         this(new ArrayList<>());
     }
 
-    public ContactDetails(ArrayList<Map.Entry<String, String>> contact_details) {
+    public ContactDetails(ArrayList<Tuple> contact_details) {
         this.contact_details = contact_details;
     }
 
-    public ArrayList<Map.Entry<String, String>> getContact_details() {
+    public ArrayList<Tuple> getContact_details() {
         return contact_details;
     }
 
-    public void setContact_details(ArrayList<Map.Entry<String, String>> contact_details) {
+    public void setContact_details(ArrayList<Tuple> contact_details) {
         this.contact_details = contact_details;
     }
 
 
     public void addDetails(int row, String name, String details) {
-        this.contact_details.add(row, new AbstractMap.SimpleEntry<>(name, details));
+        this.contact_details.add(row, new Tuple(name, details));
     }
 
     public void addDetails(String name, String details) {
-        this.contact_details.add(new AbstractMap.SimpleEntry<>(name, details));
+        this.contact_details.add(new Tuple(name, details));
     }
 
 
     public void setValueAt(int row, int col, String value) {
-        Map.Entry<String, String> entry = this.contact_details.get(row);
+        Tuple entry = this.contact_details.get(row);
         switch(col) {
             case 0:
-                String old_value = entry.getValue();
-                this.contact_details.remove(row);
-                this.contact_details.add(row, new AbstractMap.SimpleEntry<String, String>(value, old_value));
+                entry.setKey(value);
                 break;
             case 1:
                 entry.setValue(value);

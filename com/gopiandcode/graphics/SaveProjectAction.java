@@ -1,6 +1,6 @@
 package com.gopiandcode.graphics;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gopiandcode.document.Document;
 
 import javax.swing.*;
@@ -29,8 +29,9 @@ public class SaveProjectAction extends AbstractAction implements  Action {
         if(result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try (PrintWriter writer = new PrintWriter(selectedFile)){
-                Gson serializer = new Gson();
-                writer.write(serializer.toJson(document));
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.writeValue(writer, document);
+//                writer.write(serializer.toJson(document));
             } catch (Exception e1) {
                 e1.printStackTrace();
                 JOptionPane.showMessageDialog(mainFrame, "While trying to save your document an error occurred: " + e1, "CV Generator Export Error", JOptionPane.ERROR_MESSAGE);

@@ -1,8 +1,9 @@
 package com.gopiandcode.graphics;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gopiandcode.document.Document;
 
+import javax.print.Doc;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
@@ -28,9 +29,11 @@ public class LoadProjectAction extends AbstractAction implements Action {
         if(result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try (FileReader reader = new FileReader(selectedFile)){
-                Gson serializer = new Gson();
-                Document document = serializer.fromJson(reader, Document.class);
+//                Gson serializer = new Gson();
+                ObjectMapper mapper = new ObjectMapper();
+                Document document = mapper.readValue(reader, Document.class);
                 mainFrame.reset(document);
+                mainFrame.setTitle("CV Generator - " + document.getTitle());
             } catch (Exception e1) {
                 e1.printStackTrace();
                 JOptionPane.showMessageDialog(mainFrame, "While trying to load your document an error occurred: " + e1, "CV Generator Load Error", JOptionPane.ERROR_MESSAGE);

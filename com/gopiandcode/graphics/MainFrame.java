@@ -26,11 +26,12 @@ public class MainFrame extends JFrame {
         this.document = document;
         setupComponents(this.document);
         setupFrame();
+        setTitle("CV Generator - New Project");
     }
 
    private void setupFrame() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(640, 360);
+        setSize(1280, 720);
     }
 
 
