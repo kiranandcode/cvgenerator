@@ -48,7 +48,6 @@ public class MultiComponentPanel<T> extends JPanel {
             Component generatedComponent = generator.renderModel(itemModel.getElementAt(i));
             this.interal_list.add(generatedComponent);
             String name = itemModel.getElementAt(i).toString();
-            System.out.println("Adding Component " + name);
             add(generatedComponent, name);
 //            cardLayout.addLayoutComponent(generatedComponent, name);
             this.names.add(name);
@@ -62,7 +61,6 @@ public class MultiComponentPanel<T> extends JPanel {
 
 
     public void updateCurrentlySelected(int size) {
-        System.out.println("Currently Selected is " +  selectionModel.getSelectedIndex() + ", and size is " + size);
         if (size != 0) {
             currently_selected.map(integer -> {
                 if (integer >= size) {
@@ -76,7 +74,6 @@ public class MultiComponentPanel<T> extends JPanel {
         }
         if(currently_selected.isPresent()){
             int i = currently_selected.get();
-            System.out.println("Showing panel " + names.get(i));
             cardLayout.show(this, names.get(i));
         } else {
             cardLayout.show(this, "");

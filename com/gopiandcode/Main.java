@@ -10,7 +10,6 @@ public class Main {
     private static void configureStyle() {
         UIManager.LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
         for (UIManager.LookAndFeelInfo info : installedLookAndFeels) {
-            System.out.println(info.getName());
             if (info.getName().toLowerCase().contains("windows")) {
                 try {
                     UIManager.setLookAndFeel(info.getClassName());
@@ -22,7 +21,6 @@ public class Main {
         }
 
         for (UIManager.LookAndFeelInfo info : installedLookAndFeels) {
-            System.out.println(info.getName());
             if (info.getName().toLowerCase().contains("metal")) {
                 try {
                     UIManager.setLookAndFeel(info.getClassName());

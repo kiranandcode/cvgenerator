@@ -1,9 +1,11 @@
 package com.gopiandcode.document;
 
+import com.gopiandcode.latex.Latexizable;
+
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Entry implements Comparable<Entry> {
+public class Entry implements Comparable<Entry>, Latexizable {
     private String date;
     private String location;
     private String title;
@@ -68,6 +70,21 @@ public class Entry implements Comparable<Entry> {
             return 0;
         }
         return -1;
+    }
+
+    @Override
+    public String toLatex() {
+        String startFormat = "\t\t\\item[" + this.date + "] {\n" +
+                "\t\t\t\\textbf{" + this.title + ",} " + this.location + " \\par\n" +
+                "\t\t\t\\begin{itemize}";
+        StringBuilder entriesBuilder = new StringBuilder();
+        for(String s : details) {
+            entriesBuilder.append("\\item " + s + "\n");
+        }
+        String detailsFormat = entriesBuilder.toString();
+        String endFormat = "\t\t\t\\end{itemize}\n" +
+                "\t\t}";
+        return startFormat + detailsFormat + endFormat;
     }
 }
 

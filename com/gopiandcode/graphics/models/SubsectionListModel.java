@@ -30,6 +30,11 @@ public class SubsectionListModel extends AbstractListModel<Subsection> implement
         this.entries = entries;
     }
 
+    public void initialSetup() {
+        if(this.entries.size() != 0)
+            fireIntervalAdded(this, 0, this.entries.size()-1);
+    }
+
     @Override
     public void setSelectedItem(Object anItem) {
         findIndexOf((Subsection)anItem).ifPresent(integer -> {
@@ -131,7 +136,6 @@ public class SubsectionListModel extends AbstractListModel<Subsection> implement
 
     public ItemListener getItemListener() {
         return e -> {
-            System.out.println("Binging dinging: " + e.getItem().toString());
             support.firePropertyChange(new PropertyChangeEvent(this, "selected", "0", "1"));
         };
     }
@@ -140,7 +144,6 @@ public class SubsectionListModel extends AbstractListModel<Subsection> implement
         return modelItem -> {
             SubsectionModel model = new SubsectionModel(modelItem);
             model.addPropertyChangeListener(evt -> {
-                System.out.println(evt);
                 if(evt.getPropertyName() == "title") {
                     if(this.entries.size() > 0)
                         this.fireContentsChanged(this, 0, this.entries.size()-1);

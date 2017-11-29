@@ -2,10 +2,7 @@ package com.gopiandcode.graphics.models;
 
 import com.gopiandcode.document.Entry;
 import com.gopiandcode.document.Subsection;
-import com.gopiandcode.graphics.components.FunctionalDocumentListener;
-import com.gopiandcode.graphics.components.ComponentGenerator;
-import com.gopiandcode.graphics.components.JTabbedPaneList;
-import com.gopiandcode.graphics.components.PropertyChangeListenerGenerator;
+import com.gopiandcode.graphics.components.*;
 import com.gopiandcode.graphics.views.EntryView;
 
 import javax.swing.*;
@@ -79,7 +76,6 @@ public class SubsectionModel {
                         EntryListModel actual = (EntryListModel) actual_model;
                         actual.notifyEntryChanged(index);
                     } else {
-                        System.out.println(e);
                     }
                 };
             };
@@ -96,7 +92,7 @@ public class SubsectionModel {
 
 
     public ListCellRenderer<? super Entry> getListCellRenderer() {
-        return (ListCellRenderer<Entry>) (list, value, index, isSelected, cellHasFocus) -> new JLabel(value.getTitle() + ", " + value.getLocation() + " " + value.getDate() + "(" + value.getDetails().size() + ")");
+        return new EntryListCellRenderer(); //(ListCellRenderer<Entry>) (list, value, index, isSelected, cellHasFocus) -> new JLabel(value.getTitle() + ", " + value.getLocation() + " " + value.getDate() + "(" + value.getDetails().size() + ")");
     }
 }
 

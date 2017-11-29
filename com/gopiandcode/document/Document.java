@@ -66,6 +66,34 @@ public class Document implements Latexizable {
 
     @Override
     public String toLatex() {
-        return null;
+        String formattingStart = "\\documentclass{article}\n" +
+                "\\usepackage[a4paper, total={8in,11in}]{geometry}\n" +
+                "\\usepackage{graphicx}\n" +
+                "\\usepackage{scrextend}\n" +
+                "\n" +
+                "\\usepackage{calc} % needed to use + in \\setlength\n" +
+                "\\newenvironment{achievementslist}[1][1in]%\n" +
+                " {\\begin{list}{}{%\n" +
+                "   \\renewcommand{\\makelabel}[1]{\\indent\\ \\textit{##1}\\ }%\n" +
+                "   \\setlength{\\labelwidth}{#1}%\n" +
+                "   \\setlength{\\leftmargin}{\\labelwidth+\\labelsep}%\n" +
+                "   }}\n" +
+                "{\\end{list} \t\\vspace{0.5cm}}\n" +
+                "\n" +
+                "\n" +
+                "\\begin{document}\n" +
+                "{";
+        String formattingDetails = details.toLatex();
+        String titleFormatting = "\t\\begin{centering}\n" +
+                "\t{\\LARGE " + this.title + " \\par}\n" +
+                "\\vspace{0.2cm}\t\n" +
+                "{\\Large " + this.taster + " \\par}\n" +
+                "\t\\end{centering}";
+        StringBuilder entriesPanel = new StringBuilder();
+        for(Subsection s : this.content) {
+            entriesPanel.append(s.toLatex());
+        }
+        String contentFormat = entriesPanel.toString();
+        return formattingStart + formattingDetails + titleFormatting + contentFormat + "\n\\end{document}";
     }
 }

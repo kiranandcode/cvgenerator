@@ -1,12 +1,14 @@
 package com.gopiandcode.document;
 
 
+import com.gopiandcode.latex.Latexizable;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ContactDetails{
+public class ContactDetails implements Latexizable {
 
     private ArrayList<Map.Entry<String, String>> contact_details;
 
@@ -76,5 +78,21 @@ public class ContactDetails{
        result.append('}');
 
        return result.toString();
+    }
+
+    @Override
+    public String toLatex() {
+        String startFormat =
+                "\\begin{flushleft}\n" +
+                "\\begin{itemize}";
+        StringBuilder detailsFormatting = new StringBuilder();
+        for(Map.Entry<String,String> s : contact_details) {
+                detailsFormatting.append("\\item[] " + s.getKey() + ": " + s.getValue() );
+        }
+
+        String detailsFormat = detailsFormatting.toString();
+        String endFormat = "\\end{itemize}\n" +
+                "\\end{flushleft}";
+        return startFormat + detailsFormat + endFormat;
     }
 }

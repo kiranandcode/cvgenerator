@@ -30,7 +30,6 @@ public class MultiComponentPanelListListener<T> implements ListDataListener {
 
     @Override
     public void intervalAdded(ListDataEvent e) {
-        System.out.println("Interval added " + e);
         for (int i = e.getIndex1(); i >= e.getIndex0(); i--) {
             Component generatedComponent = generator.renderModel(itemModel.getElementAt(i));
 
@@ -50,7 +49,6 @@ public class MultiComponentPanelListListener<T> implements ListDataListener {
 
     @Override
     public void intervalRemoved(ListDataEvent e) {
-        System.out.println("Interval removed " + e);
         for (int i = e.getIndex1(); i >= e.getIndex0(); i--) {
             Component component = interal_list.get(i);
 
@@ -65,7 +63,6 @@ public class MultiComponentPanelListListener<T> implements ListDataListener {
 
     @Override
     public void contentsChanged(ListDataEvent e) {
-        System.out.println("Interval changed " + e);
         for (int i = e.getIndex1(); i >= e.getIndex0(); i--) {
             Component component = interal_list.get(i);
             if (mainComponent.get(component) != itemModel.getElementAt(i)) {

@@ -23,7 +23,7 @@ public class ModifySubsectionListView extends JPanel {
         comboBox.addItemListener(model.getItemListener());
 
         ComponentGenerator<Subsection> componentGenerator = model.getSubsectionComponentGenerator();
-        MultiComponentPanel<Subsection> componentPanel = new MultiComponentPanel<Subsection>(model, model, componentGenerator);
+        MultiComponentPanel<Subsection> componentPanel = new MultiComponentPanel<>(model, model, componentGenerator);
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.NONE;

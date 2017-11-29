@@ -11,8 +11,8 @@ import java.util.Map;
 public class JTabbedPaneList<T> extends JTabbedPane {
     private ArrayList cache = new ArrayList();
     private ListModel<T> model;
-    private ComponentGenerator generator;
-    private final PropertyChangeListenerGenerator listenerGenerator;
+    private ComponentGenerator<T> generator;
+    private final PropertyChangeListenerGenerator<T> listenerGenerator;
     private final TabNameGenerator titleGenerator;
 
     public JTabbedPaneList(ListModel<T> model, ComponentGenerator<T> generator, PropertyChangeListenerGenerator<T> listenerGenerator, TabNameGenerator<T> titleGenerator) {
@@ -21,8 +21,12 @@ public class JTabbedPaneList<T> extends JTabbedPane {
         this.listenerGenerator = listenerGenerator;
         this.titleGenerator = titleGenerator;
 
-        model.addListDataListener(new TabbedPaneListDataListener<>(generator));
+        TabbedPaneListDataListener<T> listener = new TabbedPaneListDataListener<>(generator);
+        model.addListDataListener(listener);
+        listener.initialSetup();
+
     }
+
 
     private class TabbedPaneListDataListener<T> implements ListDataListener {
         private ComponentGenerator<T> generator;
@@ -32,15 +36,34 @@ public class JTabbedPaneList<T> extends JTabbedPane {
             this.generator = generator;
         }
 
+        private void initialSetup() {
+            for (int i = 0; i < model.getSize(); i++){
+                T item = (T) model.getElementAt(i);
+                Component component = generator.renderModel(item);
+                component.addPropertyChangeListener(listenerGenerator.generatePropertyChangeListener(JTabbedPaneList.this.model, i));
+                cache.add(item);
+                elements.put(item, component);
+                String title = titleGenerator.generateName(item);
+                if(title.isEmpty()){
+                    title = "[empty entry]";
+                }
+                addTab(title, component);
+            }
+
+        }
+
         @Override
         public void intervalAdded(ListDataEvent e) {
             ListModel<T> list = (ListModel<T>) e.getSource();
 
-            for (int i = e.getIndex1(); i >= e.getIndex1(); i--) {
+            for (int i = e.getIndex1(); i >= e.getIndex0(); i--) {
                 T item = list.getElementAt(i);
                 Component component = generator.renderModel(item);
                 component.addPropertyChangeListener(listenerGenerator.generatePropertyChangeListener(JTabbedPaneList.this.model, i));
-                cache.add(i, item);
+                if(cache.size() > i)
+                    cache.add(i, item);
+                else
+                    cache.add(item);
                 elements.put(item, component);
                 String title = titleGenerator.generateName(item);
                 if(title.isEmpty()){
@@ -54,15 +77,12 @@ public class JTabbedPaneList<T> extends JTabbedPane {
         public void intervalRemoved(ListDataEvent e) {
             ListModel<T> list = (ListModel<T>) e.getSource();
             for (int i = e.getIndex1(); i >= e.getIndex0(); i--) {
-                System.out.println("Trying to delete index " + i);
 
                 T elementAt = null;
                 if (i < list.getSize()) {
-                    System.out.println("bingo");
 
                     elementAt = list.getElementAt(i);
                 } else if (i < cache.size()) {
-                    System.out.println("bingo");
                     elementAt = (T) cache.get(i);
                     cache.remove(i);
                 }
@@ -91,11 +111,8 @@ public class JTabbedPaneList<T> extends JTabbedPane {
 
                 T elementAt = null;
                 if (i < list.getSize()) {
-                    System.out.println("bingo");
-
                     elementAt = list.getElementAt(i);
                 } else if (i < cache.size()) {
-                    System.out.println("bingo");
                     elementAt = (T) cache.get(i);
                 }
                 if (elementAt != null) {
